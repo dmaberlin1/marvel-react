@@ -1,7 +1,8 @@
 class MarvelService {
 
     _apiBase = 'https://gateway.marvel.com:443/v1/public/'
-    _apiKey = 'e6a445e6cc8830fe096f8921d13a8c66'
+    _apiKey = 'apikey=e6a445e6cc8830fe096f8921d13a8c66'
+    _baseOffset = 210;
 
     getResource = async (url) => {
         let res = await fetch(url);
@@ -25,11 +26,13 @@ class MarvelService {
 
     _transformCharacter = (char) => {
         return {
+            id: char.id,
             name: char.name,
-            description: char.description,
+            description: char.description ? `${char.description.slice(0, 210)}...` : 'There is no description for this character',
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             homepage: char.urls[0].url,
-            wiki: char.urls[1].url
+            wiki: char.urls[1].url,
+            comics: char.comics.items
         }
     }
 
